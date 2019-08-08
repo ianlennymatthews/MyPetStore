@@ -1,0 +1,19 @@
+{
+  "name": "mypetstore",
+  "version": "1.0.0",
+  "description": "BoxKnight developer challenge ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ianlennymatthews/MyPetStore.git"
+  },
+  "author": "Ian Lenny Matthews",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ianlennymatthews/MyPetStore/issues"
+  },
+  "homepage": "https://github.com/ianlennymatthews/MyPetStore#readme"
+}
