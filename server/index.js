@@ -19,11 +19,21 @@ let boxKnightAPI =
   'https://lo2frq9f4l.execute-api.us-east-1.amazonaws.com/prod/rates/';
 
 function getCanadaRates(postalCode) {
-  return axios.get(canadaPostAPI + postalCode);
+  return axios.get(canadaPostAPI + postalCode).catch(err => {
+    console.log(
+      'An error turned from making initial get request to Canada Post API: ',
+      err
+    );
+  });
 }
 
 function getBoxKnightRates(postalCode) {
-  return axios.get(boxKnightAPI + postalCode);
+  return axios.get(boxKnightAPI + postalCode).catch(err => {
+    console.log(
+      'An error turned from making initial get request to BoxKnight API: ',
+      err
+    );
+  });
 }
 
 app.post('/getBestShippingRate', (req, res) => {
@@ -49,9 +59,16 @@ app.post('/getBestShippingRate', (req, res) => {
         let lowestRate = getLowestCostOrDate(canadaData, boxKnightData);
         res.send(lowestRate);
 
-        let shipmentRequest = sendViaCanada(lowestRate)
-          ? canadaPostAPI + 'shipment'
-          : boxKnightAPI + 'shipment';
+        let shipmentRequest = '';
+        let serviceUsed = '';
+
+        if (sendViaCanada(lowestRate)) {
+          shipmentRequest = canadaPostAPI + 'shipment';
+          serviceUsed = 'Canada Post';
+        } else {
+          shipmentRequest = boxKnightAPI + 'shipment';
+          serviceUsed = 'Box Knight';
+        }
 
         axios
           .post(shipmentRequest, {
@@ -67,17 +84,14 @@ app.post('/getBestShippingRate', (req, res) => {
           })
           .catch(err => {
             console.log(
-              'There was an error while making post request to , while attempting to create shipment: ',
+              `There was an error while making post request to ${serviceUsed}, while attempting to create shipment: `,
               err
             );
           });
       })
     )
     .catch(err => {
-      console.log(
-        'And error turned from making initial get request to BoxKnight API || Canada Post API: ',
-        err
-      );
+      console.log('Error occurred, see log: ', err);
     });
 });
 
