@@ -49,45 +49,28 @@ app.post('/getBestShippingRate', (req, res) => {
         let lowestRate = getLowestCostOrDate(canadaData, boxKnightData);
         res.send(lowestRate);
 
-        if (sendViaCanada(lowestRate)) {
-          axios
-            .post(canadaPostAPI + 'shipments', {
-              rate_id: lowestRate.id,
-              destination: {
-                address_line_one: address_line_one,
-                address_line_two: address_line_two,
-                city: city,
-                province: province,
-                postalCode: postalCode,
-                country: country
-              }
-            })
-            .catch(err => {
-              console.log(
-                'There was an error while making post request to Canada Post API: ',
-                err
-              );
-            });
-        } else {
-          axios
-            .post(boxKnightAPI + 'shipments', {
-              rate_id: lowestRate.id,
-              destination: {
-                address_line_one: address_line_one,
-                address_line_two: address_line_two,
-                city: city,
-                province: province,
-                postalCode: postalCode,
-                country: country
-              }
-            })
-            .catch(err => {
-              console.log(
-                'There was an error while making post request to BoxKnight API: ',
-                err
-              );
-            });
-        }
+        let shipmentRequest = sendViaCanada(lowestRate)
+          ? canadaPostAPI + 'shipment'
+          : boxKnightAPI + 'shipment';
+
+        axios
+          .post(shipmentRequest, {
+            rate_id: lowestRate.id,
+            destination: {
+              address_line_one: address_line_one,
+              address_line_two: address_line_two,
+              city: city,
+              province: province,
+              postalCode: postalCode,
+              country: country
+            }
+          })
+          .catch(err => {
+            console.log(
+              'There was an error while making post request to , while attempting to create shipment: ',
+              err
+            );
+          });
       })
     )
     .catch(err => {
