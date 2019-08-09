@@ -6,6 +6,7 @@ const axios = require('axios');
 const app = express();
 const PORT = 3000;
 
+//Allow Express to make use of Body-Parser Middle-Ware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -17,24 +18,6 @@ let canadaPostAPI =
 
 let boxKnightAPI =
   'https://lo2frq9f4l.execute-api.us-east-1.amazonaws.com/prod/rates/';
-
-function getCanadaRates(postalCode) {
-  return axios.get(canadaPostAPI + postalCode).catch(err => {
-    console.log(
-      'An error turned from making initial get request to Canada Post API: ',
-      err
-    );
-  });
-}
-
-function getBoxKnightRates(postalCode) {
-  return axios.get(boxKnightAPI + postalCode).catch(err => {
-    console.log(
-      'An error turned from making initial get request to BoxKnight API: ',
-      err
-    );
-  });
-}
 
 app.post('/getBestShippingRate', (req, res) => {
   let {
@@ -57,8 +40,9 @@ app.post('/getBestShippingRate', (req, res) => {
         boxKnightData = boxKnightResponseData;
 
         let lowestRate = getLowestCostOrDate(canadaData, boxKnightData);
+        //Send Lowest Rate Back To Client
         res.send(lowestRate);
-
+        //Create Shipment
         let shipmentRequest = '';
         let serviceUsed = '';
 
@@ -95,11 +79,23 @@ app.post('/getBestShippingRate', (req, res) => {
     });
 });
 
-sendViaCanada = obj => {
-  return obj.sendCanada ? true : false;
-};
+function getCanadaRates(postalCode) {
+  return axios.get(canadaPostAPI + postalCode).catch(err => {
+    console.log(
+      'An error turned from making initial get request to Canada Post API: ',
+      err
+    );
+  });
+}
 
-parseRates = array => {};
+function getBoxKnightRates(postalCode) {
+  return axios.get(boxKnightAPI + postalCode).catch(err => {
+    console.log(
+      'An error turned from making initial get request to BoxKnight API: ',
+      err
+    );
+  });
+}
 
 getLowestCostOrDate = (set1, set2) => {
   let lowest = [];
@@ -125,6 +121,23 @@ getLowestCostOrDate = (set1, set2) => {
     lowest[1].sendCanada = true;
     return lowest[1];
   }
+};
+
+parseRates = array => {
+  let lowestPrice = array[0].price;
+  let index = 0;
+
+  for (let i = 1; i < array.length; i++) {
+    if (array[i].price < lowestPrice) {
+      lowestPrice = array[i].price;
+      index = i;
+    }
+  }
+  return array[index];
+};
+
+sendViaCanada = obj => {
+  return obj.sendCanada ? true : false;
 };
 
 app.listen(PORT, () => {
