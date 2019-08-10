@@ -4,7 +4,7 @@
   "description": "BoxKnight developer challenge ",
   "main": "index.js",
   "scripts": {
-    "start": ""
+    "build": "webpack -d --watch"
   },
   "repository": {
     "type": "git",
@@ -16,19 +16,25 @@
     "url": "https://github.com/ianlennymatthews/MyPetStore/issues"
   },
   "homepage": "https://github.com/ianlennymatthews/MyPetStore#readme",
-  "devDependencies": {
-    "babel-core": "^6.23.1",
-    "babel-loader": "^6.3.2",
-    "babel-preset-es2015": "^6.22.0",
-    "babel-preset-react": "^6.23.0",
-    "webpack": "^4.39.1",
-    "webpack-cli": "^3.3.6"
-  },
   "dependencies": {
     "axios": "^0.19.0",
-    "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-bootstrap": "^1.0.0-beta.9",
+    "react-dom": "^16.8.6",
+    "body-parser": "^1.19.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "webpack-cli": "^3.3.5",
+    "webpack": "^4.35.0",
+    "babel": "^6.23.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.6",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/preset-react": "^7.0.0"
   }
 }
