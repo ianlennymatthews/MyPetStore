@@ -9,10 +9,22 @@ class App extends React.Component {
     this.state = {};
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    let address = {
+      address_line_one: '4455 Boul. Poirier',
+      address_line_two: '201',
+      city: 'Montréal',
+      province: 'Québec',
+      postalCode: 'H4R2A4',
+      country: 'Canada'
+    };
+    axios.post('/getBestShippingRate', address).then(data => {
+      console.log('This is the data received: ', data.data);
+    });
+  }
 
   render() {
-    return <div />;
+    return <div>Hello World</div>;
   }
 }
 
