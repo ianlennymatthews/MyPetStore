@@ -6,7 +6,21 @@ import InputGroup from 'react-bootstrap/InputGroup';
 class AddressForm extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      address_line_one: '',
+      address_line_two: '',
+      city: '',
+      province: '',
+      postalCode: '',
+      country: ''
+    };
+    this.handleProvince = this.handleProvince.bind(this);
   }
+
+  handleProvince(e) {
+    console.log('This is the province value: ', e.target.value);
+  }
+
   render() {
     return (
       <Form>
@@ -14,7 +28,6 @@ class AddressForm extends React.Component {
           <Form.Group md="4" controlId="">
             <Form.Label>Address Line One</Form.Label>
             <Form.Control required type="text" placeholder="Adresse ligne 1" />
-            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
           </Form.Group>
           <Form.Group md="4" controlId="">
             <Form.Label>Address Line Two</Form.Label>
@@ -23,29 +36,31 @@ class AddressForm extends React.Component {
           <Form.Group md="4" controlId="">
             <Form.Label>City</Form.Label>
             <InputGroup>
-              <Form.Control
-                type="text"
-                placeholder="Ville"
-                aria-describedby="inputGroupPrepend"
-                required
-              />
+              <Form.Control type="text" placeholder="Ville" required />
             </InputGroup>
           </Form.Group>
         </Form.Row>
         <Form.Row>
           <Form.Group md="6" controlId="">
             <Form.Label>Province</Form.Label>
-            <Form.Control as="select" type="text" placeholder="Province">
-              <option>Alberta</option>
-              <option>British Columbia</option>
-              <option>Manitoba</option>
-              <option>New Brunswick</option>
-              <option>Newfoundland and Labrador</option>
-              <option>Nova Scotia</option>
-              <option>Ontario</option>
-              <option>Prince Edward Island</option>
-              <option>Quebec</option>
-              <option>Saskatchewan</option>
+            <Form.Control
+              onChange={this.handleProvince}
+              as="select"
+              type="text"
+              placeholder="Province"
+            >
+              <option value="Alberta">Alberta</option>
+              <option value="British Columbia">British Columbia</option>
+              <option value="Manitoba">Manitoba</option>
+              <option value="New Brunswick">New Brunswick</option>
+              <option value="Newfoundland and Labrador">
+                Newfoundland and Labrador
+              </option>
+              <option value="Nova Scotia">Nova Scotia</option>
+              <option value="Ontario">Ontario</option>
+              <option value="Prince Edward Island">Prince Edward Island</option>
+              <option value="Quebec">Quebec</option>
+              <option value="Saskatchewan">Saskatchewan</option>
             </Form.Control>
           </Form.Group>
           <Form.Group md="3" controlId="">
@@ -57,7 +72,14 @@ class AddressForm extends React.Component {
             <Form.Control type="text" placeholder="Pays" required />
           </Form.Group>
         </Form.Row>
-        <Button type="submit">Submit form</Button>
+        <Button
+          onClick={e => {
+            this.props.handleSubmit(e);
+          }}
+          type="submit"
+        >
+          Submit form
+        </Button>
       </Form>
     );
   }

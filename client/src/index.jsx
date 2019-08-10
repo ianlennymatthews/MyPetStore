@@ -7,6 +7,15 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit(e) {
+    // if (e === undefined) {
+    //   console.log(true);
+    // }
+    // e.preventDefault();
+    console.log('This is e:', e);
   }
 
   componentDidMount() {
@@ -24,7 +33,7 @@ class App extends React.Component {
   }
 
   render() {
-    return <AddressForm />;
+    return <AddressForm handleSubmit={this.handleSubmit} />;
   }
 }
 
