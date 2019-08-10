@@ -15,10 +15,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Serve static files found in dist folder
 app.use('/', express.static(path.join(__dirname, '/../client/dist')));
 
-let canadaPostAPI =
+const canadaPostAPI =
   'https://7ywg61mqp6.execute-api.us-east-1.amazonaws.com/prod/rates/';
 
-let boxKnightAPI =
+const boxKnightAPI =
   'https://lo2frq9f4l.execute-api.us-east-1.amazonaws.com/prod/rates/';
 
 app.post('/getBestShippingRate', (req, res) => {
@@ -70,7 +70,7 @@ app.post('/getBestShippingRate', (req, res) => {
           })
           .then(response => {
             console.log(
-              'We have successfully posted the shipment request to the server!'
+              `We have successfully posted a shipment request to the ${serviceUsed} server!`
             );
 
             // Uncomment to see server's response
