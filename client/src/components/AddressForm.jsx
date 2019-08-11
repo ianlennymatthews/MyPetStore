@@ -35,6 +35,14 @@ class AddressForm extends React.Component {
   // Known side effect: will synchronously trigger before alert is triggered from return from post request
   reset(e) {
     ReactDOM.findDOMNode(this.messageForm).reset();
+    this.setState({
+      address_line_one: '',
+      address_line_two: '',
+      city: '',
+      province: '',
+      postalCode: '',
+      country: ''
+    });
   }
 
   render() {
@@ -65,7 +73,6 @@ class AddressForm extends React.Component {
                 onChange={e => {
                   this.handleChange(e, 'address_line_one');
                 }}
-                required
                 type="text"
                 placeholder="Adresse ligne 1"
               />
@@ -77,7 +84,6 @@ class AddressForm extends React.Component {
                 onChange={e => {
                   this.handleChange(e, 'address_line_two');
                 }}
-                required
                 type="text"
                 placeholder="Adresse ligne 2"
               />
@@ -91,7 +97,6 @@ class AddressForm extends React.Component {
                 }}
                 type="text"
                 placeholder="Ville"
-                required
               />
             </Form.Group>
           </Form.Row>
@@ -105,6 +110,7 @@ class AddressForm extends React.Component {
                 type="text"
                 placeholder="Province"
               >
+                <option>...</option>
                 <option value="Alberta">Alberta</option>
                 <option value="British Columbia">British Columbia</option>
                 <option value="Manitoba">Manitoba</option>
@@ -130,7 +136,6 @@ class AddressForm extends React.Component {
                 }}
                 type="text"
                 placeholder="Code Postal"
-                required
               />
             </Form.Group>
 
@@ -142,7 +147,6 @@ class AddressForm extends React.Component {
                 }}
                 type="text"
                 placeholder="Pays"
-                required
               />
             </Form.Group>
           </Form.Row>

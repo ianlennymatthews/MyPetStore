@@ -11,27 +11,39 @@ class App extends React.Component {
   }
 
   handleSubmit(e, addressObj) {
-    // prevent default submit request sent from client's browser;
-    e.preventDefault();
-    axios
-      .post('/getBestShippingRate', addressObj)
-      .then(data => {
-        let successMessage = `Congrats! \n\nWe've found the best shipping deal for you! \n\n${
-          data.data.description.split(' ')[0]
-        } can ship your package in ${
-          data.data.estimate_days
-        } days, for the low price of ${
-          data.data.price
-        } CAD! \n\nThanks for shopping with MyPetStore!`;
+    let validReq = true;
 
-        alert(successMessage);
-      })
-      .catch(err => {
-        console.log(
-          'There was an error returned to the browser from the initial request: ',
-          err
-        );
-      });
+    e.preventDefault();
+    // prevent default submit request sent from client's browser;
+    for (let key in addressObj) {
+      if (addressObj[key] === '') {
+        validReq = false;
+      }
+    }
+
+    if (validReq) {
+      axios
+        .post('/getBestShippingRate', addressObj)
+        .then(data => {
+          let successMessage = `Congrats! \n\nWe've found the best shipping deal for you! \n\n${
+            data.data.description.split(' ')[0]
+          } can ship your package in ${
+            data.data.estimate_days
+          } days, for the low price of ${
+            data.data.price
+          } CAD! \n\nThanks for shopping with MyPetStore!`;
+
+          alert(successMessage);
+        })
+        .catch(err => {
+          console.log(
+            'There was an error returned to the browser from the initial request: ',
+            err
+          );
+        });
+    } else {
+      alert('Please continue filling out the form with valid information!');
+    }
   }
 
   render() {
