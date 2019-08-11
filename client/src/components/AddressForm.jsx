@@ -44,6 +44,7 @@ class AddressForm extends React.Component {
         style={{
           display: 'flex',
           width: '35rem',
+          right: '100px',
           background: '#BAB2B5',
           paddingBottom: '5px'
         }}
