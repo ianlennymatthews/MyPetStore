@@ -16,13 +16,13 @@ class App extends React.Component {
     axios
       .post('/getBestShippingRate', addressObj)
       .then(data => {
-        let successMessage = `Congrats! \nWe've found the best shipping deal for you! \n${
+        let successMessage = `Congrats! \n\nWe've found the best shipping deal for you! \n\n${
           data.data.description.split(' ')[0]
         } can ship your package in ${
-          data.data.estimated_days
+          data.data.estimate_days
         } days, for the low price of ${
           data.data.price
-        } CAD! \nThanks for shopping with MyPetStore`;
+        } CAD! \n\nThanks for shopping with MyPetStore!`;
 
         alert(successMessage);
       })
