@@ -9,7 +9,8 @@ class App extends React.Component {
     this.state = {};
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
+  //Event Handler Function that upon click of Submit Button in form,
+  // sends request to internal serverAPI with client address data
   handleSubmit(e, addressObj) {
     let validReq = true;
 
