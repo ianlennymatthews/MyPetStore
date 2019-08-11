@@ -6,8 +6,6 @@ const axios = require('axios');
 const app = express();
 const PORT = 3001;
 
-//TODO: !COMMENTS!
-
 //Allow Express to make use of Body-Parser Middle-Ware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -15,13 +13,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Serve static files found in dist folder
 app.use('/', express.static(path.join(__dirname, '/../client/dist')));
 
+//API Url of CanaPostAPI
 const canadaPostAPI =
   'https://7ywg61mqp6.execute-api.us-east-1.amazonaws.com/prod/rates/';
-
+//API Url of BoxKnightAPI
 const boxKnightAPI =
   'https://lo2frq9f4l.execute-api.us-east-1.amazonaws.com/prod/rates/';
 
 app.post('/getBestShippingRate', (req, res) => {
+  //Use es6 syntax to de-structure properties from req.body object
   let {
     address_line_one,
     address_line_two,
@@ -34,10 +34,13 @@ app.post('/getBestShippingRate', (req, res) => {
   let canadaData = [];
   let boxKnightData = [];
 
+  //Async function that performs requests to both carrier API endpoints in parallel and either resolves or rejects
   axios
     .all([getCanadaRates(postalCode), getBoxKnightRates(postalCode)])
     .then(
+      //spread array into multiple arguments after all requests are complete
       axios.spread((canadaResponseData, boxKnightResponseData) => {
+        //set contents of responses to canadaData and boxKnightData arrays
         canadaData = canadaResponseData.data;
         boxKnightData = boxKnightResponseData.data;
 
@@ -48,14 +51,19 @@ app.post('/getBestShippingRate', (req, res) => {
         let shipmentRequest = '';
         let serviceUsed = '';
 
+        //if lowest rate has sendCanada property set to truee
         if (sendViaCanada(lowestRate)) {
+          //alter Canada Post apiUrl string and set it to be value of shipmentRequest
           shipmentRequest = canadaPostAPI.replace('rates', 'shipments');
+          //set service Used string appropriately
           serviceUsed = 'Canada Post';
         } else {
+          //alter BoxKnight apiUrl string and set it to be value of shipmentRequest
           shipmentRequest = boxKnightAPI.replace('rates', 'shipments');
+          //set service Used string appropriately
           serviceUsed = 'Box Knight';
         }
-
+        //Send Post-request to server with rateId and properties from request body
         axios
           .post(shipmentRequest, {
             rate_id: lowestRate.id,
@@ -91,7 +99,7 @@ app.post('/getBestShippingRate', (req, res) => {
       console.log('Error occurred, see log: ', err);
     });
 });
-
+//Function that when called when called an error handled promise containing get request to canadaPostAPI with input postalCode
 function getCanadaRates(postalCode) {
   return axios.get(canadaPostAPI + postalCode).catch(err => {
     console.log(
@@ -100,7 +108,7 @@ function getCanadaRates(postalCode) {
     );
   });
 }
-
+//Function that when called when called an error handled promise containing get request to boxKnightAPI with input postalCode
 function getBoxKnightRates(postalCode) {
   return axios.get(boxKnightAPI + postalCode).catch(err => {
     console.log(
@@ -111,31 +119,41 @@ function getBoxKnightRates(postalCode) {
 }
 
 getLowestCostOrDate = (set1, set2) => {
+  //set1: data returned from CanadaAPI
+  //set2: data returned from BoxKnightAPI
   let lowest = [];
 
   lowest.push(parseRates(set1));
   lowest.push(parseRates(set2));
-
+  //check if both lowest rates pushed to lowest array have the same price
   if (lowest[0].price === lowest[1].price) {
-    // return rate with lowest shipping day
-
+    //check which item in array has the least estimated_days property
     if (lowest[0].estimated_days < lowest[1].estimated_days) {
+      //set identifier, CASE:(canadaPostAPI has lower estimated_day property)
       lowest[0].sendCanada = true;
+      //return lowest rate
       return lowest[0];
     } else {
+      //set identifier, CASE:(boxKnight has lower estimated_day property)
       lowest[1].sendCanada = false;
+      //return lowest rate
       return lowest[1];
     }
+    //check which item in array has the lowest price
   } else if (lowest[0].price < lowest[1].price) {
-    //check which has lowest price and return
+    //set identifier, CASE:(canadaPostAPI has lower price property)
     lowest[0].sendCanada = true;
+    //return lowest rate
     return lowest[0];
   } else {
+    //set identifier, CASE:(boxKnightAPI has lower price property)
     lowest[1].sendCanada = false;
+    //return lowest rate
     return lowest[1];
   }
 };
 
+//Function that given array of rates, iterates each element and returns element with least .price property
 parseRates = array => {
   let lowestPrice = array[0].price;
   let index = 0;
@@ -148,11 +166,11 @@ parseRates = array => {
   }
   return array[index];
 };
-
-sendViaCanada = obj => {
-  return obj.sendCanada ? true : false;
+//Ternary Function that returns true or false based on sendCanada property found in rateObj
+sendViaCanada = rateObj => {
+  return rateObj.sendCanada === true ? true : false;
 };
-
+//Start server && Log which port is being listened on
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
 });
