@@ -10,7 +10,7 @@ class App extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   //Event Handler Function that upon click of Submit Button in form,
-  // sends request to internal serverAPI with client address data
+  //sends request to internal serverAPI with client address data
   handleSubmit(e, addressObj) {
     let validReq = true;
 
@@ -24,7 +24,7 @@ class App extends React.Component {
         validReq = false;
       }
     }
-    // if all keys in addressObj do not consist of empty strings
+    //if all keys in addressObj do not consist of empty strings
     if (validReq) {
       axios
         //send post request to server API with addressObj in request body
