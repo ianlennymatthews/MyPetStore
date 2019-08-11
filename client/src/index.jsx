@@ -10,26 +10,21 @@ class App extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit(e) {
-    // if (e === undefined) {
-    //   console.log(true);
-    // }
-    // e.preventDefault();
-    console.log('This is e:', e);
-  }
+  handleSubmit(e, addressObj) {
+    // prevent default request sent from client's browser
+    e.preventDefault();
 
-  componentDidMount() {
-    let address = {
-      address_line_one: '4455 Boul. Poirier',
-      address_line_two: '201',
-      city: 'Montréal',
-      province: 'Québec',
-      postalCode: 'H4R2A4',
-      country: 'Canada'
-    };
-    axios.post('/getBestShippingRate', address).then(data => {
-      console.log('This is the data received: ', data.data);
-    });
+    axios
+      .post('/getBestShippingRate', addressObj)
+      .then(data => {
+        console.log('This is the data: ', data.data);
+      })
+      .catch(err => {
+        console.log(
+          'There was an error returned to the browser from the initial request: ',
+          err
+        );
+      });
   }
 
   render() {

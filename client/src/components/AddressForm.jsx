@@ -15,10 +15,19 @@ class AddressForm extends React.Component {
       country: ''
     };
     this.handleProvince = this.handleProvince.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e, key) {
+    this.setState({
+      [key]: e.target.value
+    });
   }
 
   handleProvince(e) {
-    console.log('This is the province value: ', e.target.value);
+    this.setState({
+      province: e.target.value
+    });
   }
 
   render() {
@@ -27,17 +36,36 @@ class AddressForm extends React.Component {
         <Form.Row>
           <Form.Group md="4" controlId="">
             <Form.Label>Address Line One</Form.Label>
-            <Form.Control required type="text" placeholder="Adresse ligne 1" />
+            <Form.Control
+              onChange={e => {
+                this.handleChange(e, 'address_line_one');
+              }}
+              required
+              type="text"
+              placeholder="Adresse ligne 1"
+            />
           </Form.Group>
           <Form.Group md="4" controlId="">
             <Form.Label>Address Line Two</Form.Label>
-            <Form.Control required type="text" placeholder="Adresse ligne 2" />
+            <Form.Control
+              onChange={e => {
+                this.handleChange(e, 'address_line_two');
+              }}
+              required
+              type="text"
+              placeholder="Adresse ligne 2"
+            />
           </Form.Group>
           <Form.Group md="4" controlId="">
             <Form.Label>City</Form.Label>
-            <InputGroup>
-              <Form.Control type="text" placeholder="Ville" required />
-            </InputGroup>
+            <Form.Control
+              onChange={e => {
+                this.handleChange(e, 'city');
+              }}
+              type="text"
+              placeholder="Ville"
+              required
+            />
           </Form.Group>
         </Form.Row>
         <Form.Row>
@@ -65,16 +93,30 @@ class AddressForm extends React.Component {
           </Form.Group>
           <Form.Group md="3" controlId="">
             <Form.Label>Postal Code</Form.Label>
-            <Form.Control type="text" placeholder="Code Postal" required />
+            <Form.Control
+              onChange={e => {
+                this.handleChange(e, 'postalCode');
+              }}
+              type="text"
+              placeholder="Code Postal"
+              required
+            />
           </Form.Group>
           <Form.Group md="3" controlId="">
             <Form.Label>Country</Form.Label>
-            <Form.Control type="text" placeholder="Pays" required />
+            <Form.Control
+              onChange={e => {
+                this.handleChange(e, 'country');
+              }}
+              type="text"
+              placeholder="Pays"
+              required
+            />
           </Form.Group>
         </Form.Row>
         <Button
           onClick={e => {
-            this.props.handleSubmit(e);
+            this.props.handleSubmit(e, this.state);
           }}
           type="submit"
         >
