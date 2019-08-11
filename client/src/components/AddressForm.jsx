@@ -68,13 +68,14 @@ class AddressForm extends React.Component {
         >
           <Form.Row>
             <Form.Group style={{ paddingRight: '5px' }}>
-              <Form.Label>Address Line One</Form.Label>
+              s<Form.Label>Address Line One</Form.Label>
               <Form.Control
                 onChange={e => {
                   this.handleChange(e, 'address_line_one');
                 }}
                 type="text"
                 placeholder="Adresse ligne 1"
+                autoComplete="new-password"
               />
             </Form.Group>
 
@@ -86,6 +87,7 @@ class AddressForm extends React.Component {
                 }}
                 type="text"
                 placeholder="Adresse ligne 2"
+                autoComplete="new-password"
               />
             </Form.Group>
 
@@ -97,6 +99,7 @@ class AddressForm extends React.Component {
                 }}
                 type="text"
                 placeholder="Ville"
+                autoComplete="new-password"
               />
             </Form.Group>
           </Form.Row>
@@ -136,6 +139,7 @@ class AddressForm extends React.Component {
                 }}
                 type="text"
                 placeholder="Code Postal"
+                autoComplete="new-password"
               />
             </Form.Group>
 
@@ -147,6 +151,7 @@ class AddressForm extends React.Component {
                 }}
                 type="text"
                 placeholder="Pays"
+                autoComplete="new-password"
               />
             </Form.Group>
           </Form.Row>
