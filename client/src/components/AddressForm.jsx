@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 
 class AddressForm extends React.Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class AddressForm extends React.Component {
     this.handleProvince = this.handleProvince.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.reset = this.reset.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   //Event-Listener Function that when triggered, changes component state with corresponding key to form input string
@@ -44,6 +46,50 @@ class AddressForm extends React.Component {
       postalCode: '',
       country: ''
     });
+  }
+
+  //Event Handler Function that upon click of Submit Button in form,
+  //sends request to internal serverAPI with client address data
+  handleSubmit(e, addressObj) {
+    let validReq = true;
+
+    //prevent default submit request sent from client's browser;
+    e.preventDefault();
+
+    //iterate through addressObj keys
+    for (let key in addressObj) {
+      //check if any keys in addressObj are empty strings/form is incomplete
+      if (addressObj[key] === '') {
+        validReq = false;
+      }
+    }
+    //if all keys in addressObj do not consist of empty strings
+    if (validReq) {
+      axios
+        //send post request to server API with addressObj in request body
+        .post('/getBestShippingRate', addressObj)
+        .then(data => {
+          let successMessage = `Congrats! \n\nWe've found the best shipping deal for you! \n\n${
+            data.data.description.split(' ')[0]
+          } can ship your package in ${
+            data.data.estimate_days
+          } days, for the low price of ${
+            data.data.price
+          } CAD! \n\nThanks for shopping with MyPetStore!`;
+          //Alert user with shipping information
+          alert(successMessage);
+          this.reset();
+        })
+        .catch(err => {
+          console.log(
+            'There was an error returned to the browser from the initial request: ',
+            err
+          );
+        });
+    } else {
+      //Alert User to finish filling out form
+      alert('Please continue filling out the form with valid information!');
+    }
   }
 
   render() {
@@ -159,8 +205,7 @@ class AddressForm extends React.Component {
 
           <Button
             onClick={e => {
-              this.props.handleSubmit(e, this.state);
-              this.reset();
+              this.handleSubmit(e, this.state);
             }}
             type="submit"
             style={{
