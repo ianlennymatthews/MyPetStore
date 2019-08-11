@@ -13,16 +13,20 @@ class App extends React.Component {
   handleSubmit(e, addressObj) {
     let validReq = true;
 
+    //prevent default submit request sent from client's browser;
     e.preventDefault();
-    // prevent default submit request sent from client's browser;
+
+    //iterate through addressObj keys
     for (let key in addressObj) {
+      //check if any keys in addressObj are empty strings/form is incomplete
       if (addressObj[key] === '') {
         validReq = false;
       }
     }
-
+    // if all keys in addressObj do not consist of empty strings
     if (validReq) {
       axios
+        //send post request to server API with addressObj in request body
         .post('/getBestShippingRate', addressObj)
         .then(data => {
           let successMessage = `Congrats! \n\nWe've found the best shipping deal for you! \n\n${
@@ -32,7 +36,7 @@ class App extends React.Component {
           } days, for the low price of ${
             data.data.price
           } CAD! \n\nThanks for shopping with MyPetStore!`;
-
+          //Alert user with shipping information
           alert(successMessage);
         })
         .catch(err => {
@@ -42,6 +46,7 @@ class App extends React.Component {
           );
         });
     } else {
+      //Alert User to finish filling out form
       alert('Please continue filling out the form with valid information!');
     }
   }
