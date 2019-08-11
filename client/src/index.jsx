@@ -11,13 +11,20 @@ class App extends React.Component {
   }
 
   handleSubmit(e, addressObj) {
-    // prevent default request sent from client's browser
+    // prevent default request sent from client's browser;
     e.preventDefault();
-
     axios
       .post('/getBestShippingRate', addressObj)
       .then(data => {
-        console.log('This is the data: ', data.data);
+        let successMessage = `Congrats! \nWe've found the best shipping deal for you! \n${
+          data.data.description.split(' ')[0]
+        } can ship your package in ${
+          data.data.estimated_days
+        } days, for the low price of ${
+          data.data.price
+        } CAD! \nThanks for shopping with MyPetStore`;
+
+        alert(successMessage);
       })
       .catch(err => {
         console.log(

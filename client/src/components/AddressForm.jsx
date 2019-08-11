@@ -2,6 +2,7 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import ReactDOM from 'react-dom';
 
 class AddressForm extends React.Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class AddressForm extends React.Component {
     };
     this.handleProvince = this.handleProvince.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   handleChange(e, key) {
@@ -29,19 +31,21 @@ class AddressForm extends React.Component {
       province: e.target.value
     });
   }
+  // Function will find message Form-Node and reset its contents
+  // Known side effect: will synchronously trigger before alert is triggered from return from post request
+  reset(e) {
+    ReactDOM.findDOMNode(this.messageForm).reset();
+  }
 
   render() {
     return (
       <Card
         className="card"
         style={{
-          // justifyContent: 'center',
-          // alignItems: 'center',
           display: 'flex',
           width: '35rem',
-          background: '#BAB2B5'
-          // width: '100eem'
-          // height: '100eem'
+          background: '#BAB2B5',
+          paddingBottom: '5px'
         }}
         text="blue"
       >
@@ -49,9 +53,12 @@ class AddressForm extends React.Component {
         <Card.Header style={{ textAlign: 'center' }}>
           MyPetStore Optimal Shipping Calculator!
         </Card.Header>
-        <Form style={{ marginLeft: '10px', marginTop: '5px' }}>
+        <Form
+          style={{ marginLeft: '10px', marginTop: '5px' }}
+          ref={form => (this.messageForm = form)}
+        >
           <Form.Row>
-            <Form.Group>
+            <Form.Group style={{ paddingRight: '5px' }}>
               <Form.Label>Address Line One</Form.Label>
               <Form.Control
                 onChange={e => {
@@ -89,7 +96,7 @@ class AddressForm extends React.Component {
           </Form.Row>
 
           <Form.Row>
-            <Form.Group>
+            <Form.Group style={{ paddingRight: '5px' }}>
               <Form.Label>Province</Form.Label>
               <Form.Control
                 onChange={this.handleProvince}
@@ -142,9 +149,13 @@ class AddressForm extends React.Component {
           <Button
             onClick={e => {
               this.props.handleSubmit(e, this.state);
+              this.reset();
             }}
             type="submit"
-            style={{ background: '#AC3B61', borderColor: '#AC3B61' }}
+            style={{
+              background: '#AC3B61',
+              borderColor: '#AC3B61'
+            }}
           >
             Submit
           </Button>
