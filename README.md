@@ -40,3 +40,5 @@
 
 - Front-End: React, React-Bootstrap, Axios
 - Back-End: Body-Parser, Node, Express, Nodemon, Axios
+
+* [Slide deck of my design decisions!](https://docs.google.com/presentation/d/1nykJOcmDonTykkCUggOHxlYwv9usLITclVigELeSKTg/edit?usp=sharing)

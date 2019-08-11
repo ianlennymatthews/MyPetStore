@@ -20,12 +20,13 @@ class AddressForm extends React.Component {
     this.reset = this.reset.bind(this);
   }
 
+  //Event-Listener Function that when triggered, changes component state with corresponding key to form input string
   handleChange(e, key) {
     this.setState({
       [key]: e.target.value
     });
   }
-
+  //Event-Listener unction that uses setState() to set province key in state object to value chosen from form drop
   handleProvince(e) {
     this.setState({
       province: e.target.value
@@ -33,7 +34,7 @@ class AddressForm extends React.Component {
   }
   // Function will find message Form's node and reset its contents
   // Known side effect: will synchronously trigger before alert is triggered from return from post request
-  reset(e) {
+  reset() {
     ReactDOM.findDOMNode(this.messageForm).reset();
     this.setState({
       address_line_one: '',
