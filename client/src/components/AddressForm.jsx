@@ -31,7 +31,7 @@ class AddressForm extends React.Component {
       province: e.target.value
     });
   }
-  // Function will find message Form-Node and reset its contents
+  // Function will find message Form's node and reset its contents
   // Known side effect: will synchronously trigger before alert is triggered from return from post request
   reset(e) {
     ReactDOM.findDOMNode(this.messageForm).reset();

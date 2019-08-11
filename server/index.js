@@ -44,7 +44,7 @@ app.post('/getBestShippingRate', (req, res) => {
         let lowestRate = getLowestCostOrDate(canadaData, boxKnightData);
         //Send Lowest Rate Back To Client
         res.send(lowestRate);
-        //Create Shipment
+        //Create Shipment in the background
         let shipmentRequest = '';
         let serviceUsed = '';
 
@@ -131,7 +131,7 @@ getLowestCostOrDate = (set1, set2) => {
     lowest[0].sendCanada = true;
     return lowest[0];
   } else {
-    lowest[1].sendCanada = true;
+    lowest[1].sendCanada = false;
     return lowest[1];
   }
 };
