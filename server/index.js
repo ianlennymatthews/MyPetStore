@@ -15,10 +15,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Serve static files found in dist folder
 app.use('/', express.static(path.join(__dirname, '/../client/dist')));
 
-let canadaPostAPI =
+const canadaPostAPI =
   'https://7ywg61mqp6.execute-api.us-east-1.amazonaws.com/prod/rates/';
 
-let boxKnightAPI =
+const boxKnightAPI =
   'https://lo2frq9f4l.execute-api.us-east-1.amazonaws.com/prod/rates/';
 
 app.post('/getBestShippingRate', (req, res) => {
@@ -38,8 +38,8 @@ app.post('/getBestShippingRate', (req, res) => {
     .all([getCanadaRates(postalCode), getBoxKnightRates(postalCode)])
     .then(
       axios.spread((canadaResponseData, boxKnightResponseData) => {
-        canadaData = canadaResponseData;
-        boxKnightData = boxKnightResponseData;
+        canadaData = canadaResponseData.data;
+        boxKnightData = boxKnightResponseData.data;
 
         let lowestRate = getLowestCostOrDate(canadaData, boxKnightData);
         //Send Lowest Rate Back To Client
@@ -49,10 +49,10 @@ app.post('/getBestShippingRate', (req, res) => {
         let serviceUsed = '';
 
         if (sendViaCanada(lowestRate)) {
-          shipmentRequest = canadaPostAPI + 'shipment';
+          shipmentRequest = canadaPostAPI.replace('rates', 'shipments');
           serviceUsed = 'Canada Post';
         } else {
-          shipmentRequest = boxKnightAPI + 'shipment';
+          shipmentRequest = boxKnightAPI.replace('rates', 'shipments');
           serviceUsed = 'Box Knight';
         }
 
@@ -67,6 +67,17 @@ app.post('/getBestShippingRate', (req, res) => {
               postalCode: postalCode,
               country: country
             }
+          })
+          .then(response => {
+            console.log(
+              `We have successfully posted a shipment request to the ${serviceUsed} server!`
+            );
+
+            // Uncomment to see server's response
+            // console.log(
+            //   `This is the server's response from the successful posting`,
+            //   response
+            // );
           })
           .catch(err => {
             console.log(
