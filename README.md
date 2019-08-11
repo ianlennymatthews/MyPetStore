@@ -5,7 +5,7 @@
 1. [Overview](#overview)
 1. [Requirements](#requirements)
 1. [Usage](#usage)
-1. [Tools Used](#toolsused)
+1. [Tools Used](#tools-used)
 
 ## Overview
 
@@ -36,7 +36,7 @@
 >
 > > `npm run build`: Builds the client-side files in production mode, with full bundling. This reduces file size, but is less useful in debugging (some errors do not provide as much detail as in development mod
 
-## Tools Used
+## Tools-Used
 
 - Front-End: React, React-Bootstrap, Axios
 - Back-End: Body-Parser, Node, Express, Nodemon, Axios
