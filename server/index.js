@@ -51,7 +51,7 @@ app.post('/getBestShippingRate', (req, res) => {
         let shipmentRequest = '';
         let serviceUsed = '';
 
-        //if lowest rate has sendCanada property set to truee
+        //if lowest rate has sendCanada property set to true
         if (sendViaCanada(lowestRate)) {
           //alter Canada Post apiUrl string and set it to be value of shipmentRequest
           shipmentRequest = canadaPostAPI.replace('rates', 'shipments');
