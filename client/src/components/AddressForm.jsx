@@ -22,13 +22,13 @@ class AddressForm extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  //Event-Listener Function that when triggered, changes component state with corresponding key to form input string
+  //Event-Listener function that when triggered, changes component state with corresponding key to form input string
   handleChange(e, key) {
     this.setState({
       [key]: e.target.value
     });
   }
-  //Event-Listener unction that uses setState() to set province key in state object to value chosen from form drop
+  //Event-Listener function that uses setState() to set province key in state object to value chosen from form drop
   handleProvince(e) {
     this.setState({
       province: e.target.value
