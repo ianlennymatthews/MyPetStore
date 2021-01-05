@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/ianlennymatthews/MyPetStore#readme",
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "express": "^4.17.1",
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.9",
